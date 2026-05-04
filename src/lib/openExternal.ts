@@ -1,16 +1,19 @@
 import { Capacitor } from '@capacitor/core'
-import { Browser } from '@capacitor/browser'
+import { AppLauncher } from '@capacitor/app-launcher'
 
 /**
  * Click handler for external anchor tags. On native (Capacitor) builds we
- * intercept and open the URL in the system browser via the Browser plugin —
- * otherwise the link would replace the WebView. On the web build the default
- * `target="_blank"` behaviour is preserved.
+ * intercept and hand the URL to the OS via `AppLauncher.openUrl`, which on
+ * Android dispatches an `Intent.ACTION_VIEW` so the link opens in the user's
+ * default browser (full Chrome, with their existing cookies/session). This is
+ * more robust against Cloudflare bot challenges than launching an in-app
+ * Custom Tab. On the web build the default `target="_blank"` behaviour is
+ * preserved.
  */
 export const openExternal = (url: string) =>
   (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (Capacitor.isNativePlatform()) {
       e.preventDefault()
-      void Browser.open({ url })
+      void AppLauncher.openUrl({ url })
     }
   }
