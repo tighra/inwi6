@@ -1,6 +1,7 @@
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import { CHAPTERS, getChapter, getNeighbors, SERIES } from './data/chapters'
+import { openExternal } from './lib/openExternal'
 
 export default function ChapterPage() {
   const { number = '' } = useParams()
@@ -60,6 +61,7 @@ export default function ChapterPage() {
             href={ch.url}
             target="_blank"
             rel="noreferrer noopener"
+            onClick={openExternal(ch.url)}
             className="hidden items-center gap-1 rounded-xl bg-[var(--color-accent)] px-3 py-1.5 text-xs font-bold text-black shadow-sm transition hover:bg-[var(--color-accent-2)] sm:flex"
           >
             فتح
@@ -100,6 +102,7 @@ export default function ChapterPage() {
             href={ch.url}
             target="_blank"
             rel="noreferrer noopener"
+            onClick={openExternal(ch.url)}
             className="mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)] px-4 py-3.5 text-base font-extrabold text-black shadow-lg transition active:scale-[0.99]"
           >
             افتح الفصل {ch.number} على olympustaff

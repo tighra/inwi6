@@ -1,0 +1,8 @@
+{
+  "appId": "com.tighra.inwi6",
+  "appName": "Master of Gu",
+  "webDir": "dist",
+  "android": {
+    "allowMixedContent": false
+  }
+}

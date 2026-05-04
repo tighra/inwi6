@@ -40,6 +40,31 @@ npm run preview  # preview the production build
 npm run lint
 ```
 
+## Building the Android APK
+
+The project is wrapped with [Capacitor](https://capacitorjs.com/) so it can be
+shipped as a native Android app that bundles the web build inside a WebView.
+External chapter links are routed through `@capacitor/browser`, which opens
+them in the system browser instead of replacing the WebView.
+
+Requirements:
+
+- JDK 21
+- Android SDK with `platforms;android-34` and `build-tools;34.0.0`
+- `ANDROID_HOME` and `JAVA_HOME` exported
+
+```bash
+npm install
+npm run build              # produce dist/
+npx cap sync android       # copy dist/ into android/app/src/main/assets/public
+cd android && ./gradlew assembleDebug
+# APK at: android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+The debug APK is signed with the Android debug keystore — installable on any
+device that allows "Install from Unknown Sources". For Play Store distribution,
+generate a release keystore and run `./gradlew assembleRelease`.
+
 ## Project layout
 
 ```
