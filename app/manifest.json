@@ -1,7 +1,9 @@
 {
-  "name": "Reverend Insanity - Master of Gu REMAKE Reader",
+  "name": "ريفرند إنسانيتي - سيد الغو ريميك",
   "short_name": "RI Reader",
-  "description": "Mobile-optimized reader for Reverend Insanity (Master of Gu) REMAKE manhwa",
+  "dir": "rtl",
+  "lang": "ar",
+  "description": "قارئ مانهوا ريفرند إنسانيتي (سيد الغو) ريميك",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",

@@ -77,7 +77,7 @@
     chapters.forEach(num => {
       const card = document.createElement('div');
       card.className = 'chapter-card' + (state.readChapters.has(num) ? ' read' : '');
-      card.innerHTML = '<span class="ch-num">Ch. ' + num + '</span>';
+      card.innerHTML = '<span class="ch-num">فصل ' + num + '</span>';
       card.addEventListener('click', () => openChapter(num));
       chapterList.appendChild(card);
     });
@@ -92,7 +92,7 @@
 
     homeScreen.classList.remove('active');
     readerScreen.classList.add('active');
-    readerTitle.textContent = 'Chapter ' + num;
+    readerTitle.textContent = 'الفصل ' + num;
 
     // Update navigation buttons
     prevBtn.disabled = num <= 1;
@@ -130,7 +130,7 @@
 
       const img = document.createElement('img');
       img.dataset.src = url;
-      img.alt = 'Chapter ' + num + ' - Page ' + (i + 1);
+      img.alt = 'الفصل ' + num + ' - صفحة ' + (i + 1);
       img.loading = 'lazy';
       img.decoding = 'async';
 
@@ -148,7 +148,7 @@
         img.style.opacity = '1';
       };
       img.onerror = function () {
-        placeholder.innerHTML = 'Failed to load image ' + (i + 1);
+        placeholder.innerHTML = 'فشل تحميل الصورة ' + (i + 1);
       };
       img.style.opacity = '0';
       img.style.transition = 'opacity 0.3s';
@@ -191,14 +191,14 @@
     const endCard = document.createElement('div');
     endCard.className = 'chapter-end';
 
-    let html = '<h3>End of Chapter ' + num + '</h3>';
-    html += '<p>Thanks for reading!</p>';
+    let html = '<h3>نهاية الفصل ' + num + '</h3>';
+    html += '<p>شكراً للقراءة!</p>';
     html += '<div class="chapter-end-buttons">';
 
     if (num < TOTAL_CHAPTERS) {
-      html += '<button class="btn-primary" id="end-next-btn">Next Chapter &rarr;</button>';
+      html += '<button class="btn-primary" id="end-next-btn">الفصل التالي &larr;</button>';
     }
-    html += '<button class="btn-secondary" id="end-home-btn">Chapter List</button>';
+    html += '<button class="btn-secondary" id="end-home-btn">قائمة الفصول</button>';
     html += '</div>';
 
     endCard.innerHTML = html;
@@ -342,7 +342,7 @@
     for (let i = 1; i <= TOTAL_CHAPTERS; i++) {
       const item = document.createElement('div');
       item.className = 'selector-item' + (i === state.currentChapter ? ' current' : '');
-      item.textContent = 'Chapter ' + i;
+      item.textContent = 'الفصل ' + i;
       item.addEventListener('click', () => {
         closeChapterSelector();
         openChapter(i);

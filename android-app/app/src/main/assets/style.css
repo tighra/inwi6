@@ -24,7 +24,8 @@
 }
 
 html {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Noto Sans Arabic', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  direction: rtl;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -135,7 +136,8 @@ body {
   height: 6px;
   border-radius: 50%;
   background: var(--accent);
-  margin-right: 6px;
+  margin-left: 6px;
+  margin-right: 0;
   vertical-align: middle;
 }
 
@@ -385,7 +387,8 @@ body {
 /* Scroll to Top Button */
 .scroll-top-btn {
   position: fixed;
-  right: 16px;
+  left: 16px;
+  right: auto;
   bottom: 80px;
   z-index: 98;
   width: 44px;
