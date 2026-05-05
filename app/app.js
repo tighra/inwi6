@@ -108,7 +108,11 @@
     showBars();
 
     // Update URL hash
-    history.pushState({ chapter: num }, '', '#chapter-' + num);
+    if (window.location.hash === '#chapter-' + num) {
+      history.replaceState({ chapter: num }, '', '#chapter-' + num);
+    } else {
+      history.pushState({ chapter: num }, '', '#chapter-' + num);
+    }
   }
 
   // Render images in reader
@@ -226,8 +230,12 @@
     topBar.classList.add('visible');
     bottomBar.classList.add('visible');
     progressBar.classList.add('visible');
+    resetBarsTimeout();
+  }
+
+  function resetBarsTimeout() {
     clearTimeout(barsTimeout);
-    barsTimeout = setTimeout(hideBars, 3000);
+    barsTimeout = setTimeout(hideBars, 4000);
   }
 
   function hideBars() {
@@ -383,6 +391,16 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
+    // Keep bars visible when interacting with topbar/bottombar
+    topBar.addEventListener('click', (e) => {
+      e.stopPropagation();
+      resetBarsTimeout();
+    });
+    bottomBar.addEventListener('click', (e) => {
+      e.stopPropagation();
+      resetBarsTimeout();
+    });
+
     // Settings
     settingsBtn.addEventListener('click', () => {
       settingsPanel.classList.add('active');
@@ -395,7 +413,10 @@
     });
 
     // Chapter title click -> selector
-    readerTitle.addEventListener('click', openChapterSelector);
+    readerTitle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openChapterSelector();
+    });
     selectorClose.addEventListener('click', closeChapterSelector);
     chapterSelector.addEventListener('click', (e) => {
       if (e.target === chapterSelector) closeChapterSelector();
@@ -406,7 +427,16 @@
       if (e.state && e.state.chapter) {
         openChapter(e.state.chapter);
       } else {
-        goHome();
+        const hash = window.location.hash;
+        const match = hash.match(/^#chapter-(\d+)$/);
+        if (match) {
+          const num = parseInt(match[1]);
+          if (num >= 1 && num <= TOTAL_CHAPTERS) {
+            openChapter(num);
+            return;
+          }
+        }
+        if (state.currentChapter) goHome();
       }
     });
 
@@ -449,7 +479,7 @@
     }, { passive: true });
   }
 
-  // Handle initial URL hash
+  // Handle initial URL hash and hash changes
   function handleHash() {
     const hash = window.location.hash;
     const match = hash.match(/^#chapter-(\d+)$/);
@@ -459,6 +489,19 @@
         openChapter(num);
         return;
       }
+    }
+  }
+
+  function handleHashChange() {
+    const hash = window.location.hash;
+    const match = hash.match(/^#chapter-(\d+)$/);
+    if (match) {
+      const num = parseInt(match[1]);
+      if (num >= 1 && num <= TOTAL_CHAPTERS && num !== state.currentChapter) {
+        openChapter(num);
+      }
+    } else if (hash === '' || hash === '#') {
+      if (state.currentChapter) goHome();
     }
   }
 
