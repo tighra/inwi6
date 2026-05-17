@@ -1,0 +1,2 @@
+-keep class com.bimotv.app.model.** { *; }
+-keep class com.google.android.gms.cast.framework.** { *; }
