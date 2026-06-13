@@ -1,0 +1,31 @@
+{
+  "name": "Elix Casa Player",
+  "short_name": "Elix Player",
+  "description": "A smooth personal streaming player for authorized media sources.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "browser"],
+  "orientation": "any",
+  "background_color": "#050816",
+  "theme_color": "#0a0f1f",
+  "categories": ["entertainment", "video", "utilities"],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "My streams",
+      "short_name": "Streams",
+      "url": "/#custom",
+      "description": "Open personal authorized streams"
+    }
+  ]
+}
