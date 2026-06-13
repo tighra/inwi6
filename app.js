@@ -47,8 +47,10 @@ const state = {
   activeCategory: "All",
   activeView: "home",
   currentStream: null,
+  deferredInstallPrompt: null,
   hls: null,
   search: "",
+  wakeLock: null,
   customStreams: readJson(storageKeys.custom, []),
   favorites: new Set(readJson(storageKeys.favorites, [])),
 };
@@ -71,6 +73,7 @@ const elements = {
   sectionTitle: document.querySelector("#sectionTitle"),
   streamForm: document.querySelector("#streamForm"),
   formStatus: document.querySelector("#formStatus"),
+  installButton: document.querySelector("#installButton"),
   themeToggle: document.querySelector("#themeToggle"),
   navLinks: [...document.querySelectorAll(".nav-link")],
   scrollButtons: [...document.querySelectorAll("[data-scroll-target]")],
@@ -80,6 +83,7 @@ init();
 
 function init() {
   applySavedTheme();
+  applyHashView();
   bindEvents();
   renderCategories();
   renderStreams();
@@ -96,12 +100,17 @@ function bindEvents() {
   elements.streamForm.addEventListener("submit", handleAddStream);
   elements.favoriteButton.addEventListener("click", toggleCurrentFavorite);
   elements.copyLinkButton.addEventListener("click", copyCurrentUrl);
+  elements.installButton.addEventListener("click", installApp);
   elements.themeToggle.addEventListener("click", toggleTheme);
+  elements.video.addEventListener("play", requestWakeLock);
+  elements.video.addEventListener("pause", releaseWakeLock);
+  elements.video.addEventListener("ended", releaseWakeLock);
 
   elements.navLinks.forEach((link) => {
     link.addEventListener("click", () => {
       state.activeView = link.dataset.view;
       state.activeCategory = "All";
+      history.replaceState(null, "", `#${state.activeView}`);
       elements.navLinks.forEach((item) => item.classList.toggle("is-active", item === link));
       renderCategories();
       renderStreams();
@@ -115,6 +124,29 @@ function bindEvents() {
         block: "start",
       });
     });
+  });
+
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    state.deferredInstallPrompt = event;
+    elements.installButton.hidden = false;
+  });
+
+  window.addEventListener("appinstalled", () => {
+    state.deferredInstallPrompt = null;
+    elements.installButton.hidden = true;
+  });
+}
+
+function applyHashView() {
+  const view = location.hash.replace("#", "");
+  if (!["home", "favorites", "custom"].includes(view)) {
+    return;
+  }
+
+  state.activeView = view;
+  elements.navLinks.forEach((link) => {
+    link.classList.toggle("is-active", link.dataset.view === view);
   });
 }
 
@@ -235,6 +267,7 @@ function selectStream(stream) {
   elements.favoriteButton.disabled = false;
   elements.copyLinkButton.disabled = false;
   updateCurrentFavoriteButton();
+  updateMediaSession(stream);
   loadVideo(stream.url);
   document.querySelector(".player-card")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
@@ -349,6 +382,53 @@ async function copyCurrentUrl() {
 
 function updateFavoriteCount() {
   elements.favoriteCount.textContent = state.favorites.size;
+}
+
+async function installApp() {
+  if (!state.deferredInstallPrompt) {
+    return;
+  }
+
+  state.deferredInstallPrompt.prompt();
+  await state.deferredInstallPrompt.userChoice;
+  state.deferredInstallPrompt = null;
+  elements.installButton.hidden = true;
+}
+
+async function requestWakeLock() {
+  if (!("wakeLock" in navigator) || state.wakeLock) {
+    return;
+  }
+
+  try {
+    state.wakeLock = await navigator.wakeLock.request("screen");
+    state.wakeLock.addEventListener("release", () => {
+      state.wakeLock = null;
+    });
+  } catch {
+    state.wakeLock = null;
+  }
+}
+
+async function releaseWakeLock() {
+  if (!state.wakeLock) {
+    return;
+  }
+
+  await state.wakeLock.release();
+  state.wakeLock = null;
+}
+
+function updateMediaSession(stream) {
+  if (!("mediaSession" in navigator)) {
+    return;
+  }
+
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: stream.name,
+    artist: stream.category,
+    album: "Elix Casa Player",
+  });
 }
 
 function streamType(url) {

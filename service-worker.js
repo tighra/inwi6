@@ -1,4 +1,4 @@
-const cacheName = "elix-casa-player-v1";
+const cacheName = "elix-casa-player-v2";
 const shellFiles = ["/", "/index.html", "/styles.css", "/app.js", "/manifest.webmanifest", "/favicon.svg"];
 
 self.addEventListener("install", (event) => {

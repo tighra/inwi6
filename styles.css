@@ -45,7 +45,12 @@ html {
 
 body {
   min-height: 100vh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
   margin: 0;
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
+  -webkit-tap-highlight-color: transparent;
   color: var(--text);
   background:
     radial-gradient(circle at top left, rgba(34, 211, 238, 0.22), transparent 34rem),
@@ -265,6 +270,29 @@ p {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+}
+
+.android-strip {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 6px 2px 12px;
+  scrollbar-width: none;
+}
+
+.android-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.android-strip span {
+  flex: 0 0 auto;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.07);
+  font-size: 0.84rem;
+  font-weight: 800;
 }
 
 .button {
@@ -537,6 +565,124 @@ video {
   .toolbar,
   .add-stream {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  body {
+    background: var(--bg);
+  }
+
+  .app-shell {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    inset: auto max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
+    z-index: 20;
+    display: block;
+    height: auto;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    background: rgba(5, 8, 22, 0.86);
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.38);
+  }
+
+  :root.light .sidebar {
+    background: rgba(255, 255, 255, 0.88);
+  }
+
+  .brand,
+  .sidebar-card {
+    display: none;
+  }
+
+  .nav-stack {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .nav-link {
+    min-height: 52px;
+    justify-content: center;
+    padding: 8px 10px;
+    border-radius: 18px;
+    font-size: 0.82rem;
+    text-align: center;
+  }
+
+  .nav-link .pill {
+    position: absolute;
+    transform: translate(42px, -18px);
+  }
+
+  .main {
+    padding: 14px 14px 104px;
+  }
+
+  .hero {
+    min-height: 72svh;
+    align-content: end;
+    padding: 22px;
+  }
+
+  h1 {
+    font-size: clamp(2.45rem, 15vw, 4.2rem);
+  }
+
+  .hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .android-strip {
+    margin: -8px 0 2px;
+  }
+
+  .player-card {
+    border-radius: 22px;
+  }
+
+  .player-meta {
+    padding: 18px;
+  }
+
+  .video-wrap {
+    aspect-ratio: 16 / 10;
+  }
+
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 10px;
+    border-radius: 20px;
+    background: rgba(5, 8, 22, 0.86);
+  }
+
+  :root.light .toolbar {
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .search-box input,
+  .category-tabs button,
+  .button {
+    min-height: 52px;
+  }
+
+  .stream-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stream-card {
+    min-height: 220px;
+  }
+
+  .add-stream {
+    border-radius: 24px;
   }
 }
 

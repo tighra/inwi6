@@ -7,10 +7,12 @@ This project does **not** scrape, bypass DRM, or extract protected video sources
 ## Features
 
 - App-style layout inspired by TV guide apps
+- Android-friendly installable PWA experience
 - Built-in responsive player with HLS support through hls.js
 - Search, categories, channel details, and favorites
 - Custom authorized stream entry with local persistence
 - PWA manifest and offline shell caching
+- Screen wake lock while video is playing on supported Android browsers
 - No build step required
 
 ## Run locally
