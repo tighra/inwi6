@@ -1,4 +1,4 @@
-const cacheName = "elix-casa-player-v2";
+const cacheName = "elix-casa-player-v3";
 const shellFiles = ["/", "/index.html", "/styles.css", "/app.js", "/manifest.webmanifest", "/favicon.svg"];
 
 self.addEventListener("install", (event) => {
@@ -22,6 +22,19 @@ self.addEventListener("fetch", (event) => {
 
   const requestUrl = new URL(event.request.url);
   if (requestUrl.origin !== self.location.origin) {
+    return;
+  }
+
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(cacheName).then((cache) => cache.put("/", clone));
+          return response;
+        })
+        .catch(() => caches.match("/") || caches.match("/index.html"))
+    );
     return;
   }
 
