@@ -688,14 +688,12 @@ video {
 
 @media (max-width: 640px) {
   .main,
-  .sidebar,
   .hero,
   .player-meta,
   .add-stream {
     padding: 18px;
   }
 
-  .nav-stack,
   .stream-form {
     grid-template-columns: 1fr;
     width: 100%;
