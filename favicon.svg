@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Elix Casa Player">
+  <defs>
+    <linearGradient id="g" x1="16" x2="112" y1="18" y2="110" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6ee7f9"/>
+      <stop offset="1" stop-color="#86efac"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="30" fill="#050816"/>
+  <path fill="url(#g)" d="M34 33h61v17H54v12h35v16H54v17h43v17H34z"/>
+  <circle cx="93" cy="34" r="10" fill="#fb7185"/>
+</svg>
